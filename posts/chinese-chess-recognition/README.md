@@ -5,6 +5,9 @@ description: 基于深度学习的中国象棋识别、棋谱识别
 page_url: https://github.com/TheOne1006/chinese-chess-recognition
 ---
 
+
+[项目主页](https://github.com/TheOne1006/chinese-chess-recognition)
+
 - Chinese Chess Recognition 
 - Xiangqi Recognition
 
