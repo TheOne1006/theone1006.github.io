@@ -1,0 +1,9 @@
+- title: 中国象棋棋谱识别
+  image: posts/chinese-chess-recognition/assets/demo001_result.png
+  description: 基于深度学习的中国象棋识别、棋谱识别
+  link: posts/chinese-chess-recognition
+
+- title: Notion 转成思维导图
+  image: posts/notion-2-mind/public/demo.jpg
+  description: 将 Notion 文档转成思维导图
+  link: posts/notion-2-mind 
