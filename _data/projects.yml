@@ -7,3 +7,8 @@
   image: posts/notion-2-mind/public/demo.jpg
   description: 将 Notion 文档转成思维导图
   link: posts/notion-2-mind 
+
+- title: Lucky Contract Address
+  image: posts/lucky-contract-address/assets/home.png
+  description: 合约地址生成器，帮助你在多个区块链网络上部署具有特定地址
+  link: posts/lucky-contract-address

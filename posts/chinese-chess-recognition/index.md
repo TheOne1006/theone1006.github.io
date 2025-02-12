@@ -19,8 +19,7 @@ page_url: https://github.com/TheOne1006/chinese-chess-recognition
 
 ## Pretrained Model
 
-- https://huggingface.co/spaces/yolo12138/Chinese_Chess_Recognition/tree/main/onnx
-
+- <https://huggingface.co/spaces/yolo12138/Chinese_Chess_Recognition/tree/main/onnx>
 
 # 摘要
 
@@ -29,11 +28,8 @@ page_url: https://github.com/TheOne1006/chinese-chess-recognition
 由于古早时期大多都是固定的棋盘、棋子。或者是基于对棋盘、棋子特征的方案，但都存在局限性。在真实场景下，拍摄角度、棋盘、棋子都会影响识别效果。
 本研究尝试使用深度学习通过分三步进行 棋盘识别、关键点检测、多区域分类检测。采用先进的 Swin Transformer2 网络架构，对棋盘进行 10x9 区域分类检测。
 
-
 ![Figure 1](assets/demo001_label.png)
 ![Figure 2](assets/demo001_result.png)
-
-
 
 # 背景
 
@@ -43,7 +39,6 @@ page_url: https://github.com/TheOne1006/chinese-chess-recognition
 从效果上看上看，只针对了屏幕游戏场景进行了优化。
 
 得益于深度学习的发展，在现在模型和方法的进步，发现在某些领域上的识别方法，与象棋也有着一定的相似性,开始尝试使用深度学习的方法进行棋谱识别问题。
-
 
 # RELATED WORK
 
@@ -63,8 +58,9 @@ page_url: https://github.com/TheOne1006/chinese-chess-recognition
 *2.YOLO*，尝试过，由于数据量太小，不得不放弃，也尝试自定义 header 用于处理 90 分类的棋子，但效果并不理想。因为 YOLO 的默认工作方法与实际情况不太贴合。yolo 提供的三组特征，实际也只有一个组生效，因为棋子的大小都是 差不多的。
 *3.multi-head multi-task + Vision Transformer 模型*, 同时检测 90个位置的 棋子颜色，棋子文字分类(帅将、士、象相、车、马、炮、兵卒) 一起 棋局bbbox 信息。
 *4.使用 LineNet 模型*，通过 棋盘的直线检测，来辅助棋子检测。
-  - ![Figure 3](assets/detected_lines.png)
-  - 但象棋的棋子是在线上的，会干扰直线的预测
+
+- ![Figure 3](assets/detected_lines.png)
+- 但象棋的棋子是在线上的，会干扰直线的预测
 
 除了第一个外，其他都是常用的视觉方案，但都存在局限性（超多的数据集），用于处理不同场景的识别问题。
 这是人的局限性，不是模型的局限性。
@@ -76,13 +72,11 @@ page_url: https://github.com/TheOne1006/chinese-chess-recognition
 参考国际象棋领域的 [End-to-End Chess Recognition](https://arxiv.org/html/2310.04086?_immersive_translate_auto_translate=1)，
 基于该文章的思路，可以实现。
 但目前训练经费、计算资源 都很高、而且我没有。真实场景的标注样本也很难获取。
-综上，分布标注对我来说，是更可行的方案，每一步都是相对简单，更容易验证。 
+综上，分布标注对我来说，是更可行的方案，每一步都是相对简单，更容易验证。
 
+### 关键点检测
 
-### 物体检测与关键点检测
-
-物体检测 略.
-关键点检测，棋盘上总共 10x9 个位置。真实图片中 90 个关键点太难标注,跳过。
+~~关键点检测，棋盘上总共 10x9 个位置。真实图片中 90 个关键点太难标注,略。~~
 34 个关键点，棋盘的外圈。标注为
 
 ```
@@ -100,8 +94,6 @@ J0 J1 J2 J3 J4 J5 J6 J7 J8
 最终保留了 A0、A8、J0、J8 四个关键点。
 
 参考 Figure 1
-
-
 
 ### 多区域分类检测
 
@@ -123,8 +115,6 @@ J0 与 J8, 为 红方 的两个角点
 ->
 ![Figure 5](assets/bad_shooting_angle2_transformed.png)
 
-
-
 #### 16 分类
 
 16 分类包含: 黑子(将士相马车炮卒 对应简写`kabnrcp`) 、红子(帅将相马车炮卒 对应简写`KABNRCP`) +  其他 简写`x`  + 空位 简写`.`
@@ -132,6 +122,7 @@ J0 与 J8, 为 红方 的两个角点
 将俯视图 通过 backbone 后，再使用 卷积 来处理特征信息，最终特征宽高为 10x9x16
 
 最终输出特征图
+
 ```
           +----------+
          /          /|
@@ -152,7 +143,6 @@ J0 与 J8, 为 红方 的两个角点
 
 参考 Figure 2
 
-
 # 研究方法
 
 - 数据集
@@ -169,10 +159,9 @@ J0 与 J8, 为 红方 的两个角点
 
 1. 目前数据集来自网络视频、以及图片，以及使用网页游戏截图。其中来自 103 个对局视频。训练图片 12000 张，测试图片 3000 张。
 2. 采用 x-anything 格式存储，方便修改以及导出 yolo 格式。
-3. 使用 gradio 编写 标注工具，方便处视频文件的标注，因为部分视频存在抖动无法批量标注。 
+3. 使用 gradio 编写 标注工具，方便处视频文件的标注，因为部分视频存在抖动无法批量标注。
 4. 预览：使用 fiftyone 预览数据集，方便查看数据集。
 5. 多次迭代: 前期数量少，对错误标记进行修正.
-
 
 ### 数据增强
 
@@ -188,10 +177,10 @@ J0 与 J8, 为 红方 的两个角点
 
 ### 网络架构与损失函数
 
-det 和 pose 都是采用了 RTM 模型。   
+pose 采用了 SimCC 模型。
 
 多区域分类检测(cchess_cls_net)，采用了 Swin Transformer2 网络架构。
-使用三个 conv 层，来处理特征信息，最终特征宽高为 10x9x16, 
+使用 conv 层，来处理特征信息，最终特征宽高为 10x9x16,
 
 loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以，但是需要进行迭代更新 gt label。
 
@@ -204,7 +193,7 @@ loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以�
 3. 部分 embedding 使用 `freeze` 策略，在训练过程中不进行更新, 这基本不影响。
 4. `weights`: 由于棋局本身限制，空位本身就很多，以及棋子数量不均，需对棋子分类权重进行调整。
 
-```
+```text
 'point': .2,
 'other': 1.,
 'red_king': 2.,
@@ -223,7 +212,6 @@ loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以�
 'black_pawn': 1.,
 ```
 
-
 ### 评估指标
 
 | 结合传统的多分类方法，使用准确率、召回率、F1 等指标。
@@ -235,7 +223,6 @@ loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以�
 | mAP            | 0.995  |
 | precision      | 0.988  |
 | recall         | 0.992  |
-
 
 | 以及对 16 分类分别作了对应的 评估
 
@@ -250,7 +237,6 @@ loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以�
 | point         | 0.99      |
 | ...           | ...       |
 
-
 | 对90 个位置的正确率进行 评估
 
 |     | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    |
@@ -259,37 +245,29 @@ loss 使用 `LabelSmoothLoss`, 如果使用 `CrossEntropyLoss` 应该也可以�
 | ... |
 | J   |
 
-
-
-
 # 研究结果
 
 - 与现有方法对比
 - 消融实验
 
-# TODO:
-
-- 更小的模型
-- 减少检测步骤
-
 # 结论
+
 - 主要发现
 - 局限性
 - 未来工作方向
 
 # 参考文献
 
-
 # 附录
 
 - [End-to-End Chess Recognition](https://arxiv.org/html/2310.04086?_immersive_translate_auto_translate=1)
 
-
 ## 代码
+
 - 实现细节
 - 使用说明
 
 ## 数据集
+
 - 数据统计
 - 示例图像
-
